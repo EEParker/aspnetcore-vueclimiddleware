@@ -5,6 +5,8 @@ https://github.com/aspnet/JavaScriptServices/pull/1726
 
 Usage Example:  
 ```csharp
+    using VueCliMiddleware;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
