@@ -4,7 +4,7 @@
     <Description>Helpers for building single-page applications on ASP.NET MVC Core using Vue Cli.</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>VueCliMiddleware</Title>
-    <VersionPrefix>2.1.1</VersionPrefix>
+    <VersionPrefix>2.1.2</VersionPrefix>
     <LangVersion>Latest</LangVersion>
     <Authors>EEParker</Authors>
     <RepositoryUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</RepositoryUrl>
