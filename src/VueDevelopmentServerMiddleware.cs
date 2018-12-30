@@ -86,7 +86,7 @@ namespace VueCliMiddleware
                     // no compiler warnings. So instead of waiting for that, consider it ready as soon
                     // as it starts listening for requests.
                     await npmScriptRunner.StdOut.WaitForMatch(
-                        new Regex("Compiled successfully", RegexOptions.None, RegexMatchTimeout));
+                        new Regex("Compiled ", RegexOptions.None, RegexMatchTimeout));
                 }
                 catch (EndOfStreamException ex)
                 {
