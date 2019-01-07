@@ -4,7 +4,7 @@
     <Description>Helpers for building single-page applications on ASP.NET MVC Core using Vue Cli.</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>VueCliMiddleware</Title>
-    <VersionPrefix>2.1.1</VersionPrefix>
+    <VersionPrefix>2.2.0</VersionPrefix>
     <LangVersion>Latest</LangVersion>
     <Authors>EEParker</Authors>
     <RepositoryUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</RepositoryUrl>
@@ -12,26 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Npm\NpmScriptRunner.cs" Link="Npm\NpmScriptRunner.cs" />
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Util\EventedStreamReader.cs" Link="Util\EventedStreamReader.cs" />
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Util\EventedStreamStringReader.cs" Link="Util\EventedStreamStringReader.cs" />
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Util\LoggerFinder.cs" Link="Util\LoggerFinder.cs" />
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Util\TaskTimeoutExtensions.cs" Link="Util\TaskTimeoutExtensions.cs" />
-    <Compile Include="..\submodules\JavaScriptServices\src\Microsoft.AspNetCore.SpaServices.Extensions\Util\TcpPortFinder.cs" Link="Util\TcpPortFinder.cs" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Npm\" />
-    <Folder Include="Util\" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
