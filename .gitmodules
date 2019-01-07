@@ -2,7 +2,3 @@
 	path = JavaScriptServices
 	url = https://github.com/aspnet/JavaScriptServices
 	branch = release/2.1
-[submodule "submodules/JavaScriptServices"]
-	path = submodules/JavaScriptServices
-	url = https://github.com/aspnet/JavaScriptServices
-	branch = release/2.1

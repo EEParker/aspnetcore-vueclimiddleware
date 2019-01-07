@@ -1,5 +1,3 @@
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SpaServices;
 using System;
@@ -22,9 +20,14 @@ namespace VueCliMiddleware
         /// <param name="spaBuilder">The <see cref="ISpaBuilder"/>.</param>
         /// <param name="npmScript">The name of the script in your package.json file that launches the vue-cli server.</param>
         /// <param name="port">Specify vue cli server port number. If &lt; 80, uses random port. </param>
+        /// <param name="runner">Specify the runner, Npm and Yarn are valid options. Yarn support is HIGHLY experimental.</param>
+        /// <param name="regex">Specify a custom regex string to search for in the log indicating vue-cli serve is complete.</param>
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
-            string npmScript, int port = 0)
+            string npmScript,
+            int port = 0,
+            ScriptRunnerType runner = ScriptRunnerType.Npm, 
+            string regex = VueCliMiddleware.DefaultRegex)
         {
             if (spaBuilder == null)
             {
@@ -38,7 +41,7 @@ namespace VueCliMiddleware
                 throw new InvalidOperationException($"To use {nameof(UseVueCli)}, you must supply a non-empty value for the {nameof(SpaOptions.SourcePath)} property of {nameof(SpaOptions)} when calling {nameof(SpaApplicationBuilderExtensions.UseSpa)}.");
             }
 
-            VueCliMiddleware.Attach(spaBuilder, npmScript, port);
+            VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex);
         }
     }
 }
