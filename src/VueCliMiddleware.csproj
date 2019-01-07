@@ -9,6 +9,7 @@
     <Authors>EEParker</Authors>
     <RepositoryUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware/blob/master/LICENSE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>

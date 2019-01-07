@@ -1,9 +1,10 @@
-This is a stand-alone module to add VueCli support to Aspnet Core 2.1.
+# VueCliMiddleware
 
-Due to the discussion here, it was decided to not be included in the Microsoft owned package.
-https://github.com/aspnet/JavaScriptServices/pull/1726
+[![](https://img.shields.io/nuget/v/VueCliMiddleware.svg)](https://www.nuget.org/packages/VueCliMiddleware/)
 
-Usage Example:  
+This is a stand-alone module to add VueCli support to AspNet Core 2.2.0. 
+
+## Usage Example
 ```csharp
     using VueCliMiddleware;
 
@@ -43,3 +44,7 @@ Usage Example:
         }
     }
 ```
+
+## History
+
+Due to the discussion [here](https://github.com/aspnet/JavaScriptServices/pull/1726), it was decided to not be included in the Microsoft owned package.
