@@ -14,6 +14,8 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
+
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("VueCliMiddleware.Tests")]
 namespace VueCliMiddleware
 {
     internal static class LoggerFinder
@@ -154,17 +156,23 @@ namespace VueCliMiddleware
 
                 OnChunk(new ArraySegment<char>(buf, 0, chunkLength));
 
-                var lineBreakPos = Array.IndexOf(buf, '\n', 0, chunkLength);
-                if (lineBreakPos < 0)
+                int lineBreakPos = -1;
+                int startPos = 0;
+
+                // get all the newlines
+                while ((lineBreakPos = Array.IndexOf(buf, '\n', startPos, chunkLength - startPos)) >= 0 && startPos < chunkLength)
                 {
-                    _linesBuffer.Append(buf, 0, chunkLength);
-                }
-                else
-                {
-                    _linesBuffer.Append(buf, 0, lineBreakPos + 1);
+                    var length = (lineBreakPos + 1) - startPos;
+                    _linesBuffer.Append(buf, startPos, length);
                     OnCompleteLine(_linesBuffer.ToString());
                     _linesBuffer.Clear();
-                    _linesBuffer.Append(buf, lineBreakPos + 1, chunkLength - (lineBreakPos + 1));
+                    startPos = lineBreakPos + 1;
+                }
+
+                // get the rest
+                if (lineBreakPos < 0 && startPos < chunkLength)
+                {
+                    _linesBuffer.Append(buf, startPos, chunkLength);
                 }
             }
         }
