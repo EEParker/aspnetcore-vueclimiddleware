@@ -172,7 +172,7 @@ namespace VueCliMiddleware
                 // get the rest
                 if (lineBreakPos < 0 && startPos < chunkLength)
                 {
-                    _linesBuffer.Append(buf, startPos, chunkLength);
+                    _linesBuffer.Append(buf, startPos, chunkLength - startPos);
                 }
             }
         }
