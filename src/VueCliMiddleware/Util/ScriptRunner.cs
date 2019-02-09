@@ -74,6 +74,9 @@ namespace VueCliMiddleware
             var process = LaunchNodeProcess(processStartInfo);
             StdOut = new EventedStreamReader(process.StandardOutput);
             StdErr = new EventedStreamReader(process.StandardError);
+
+            // Ensure node process is killed if test process termination is non-graceful.
+            ProcessTracker.Add(process);
         }
 
         public void AttachToLogger(ILogger logger)
