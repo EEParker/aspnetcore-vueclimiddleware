@@ -26,8 +26,9 @@ namespace VueCliMiddleware
             this ISpaBuilder spaBuilder,
             string npmScript,
             int port = 0,
-            ScriptRunnerType runner = ScriptRunnerType.Npm, 
-            string regex = VueCliMiddleware.DefaultRegex)
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex,
+            string uriScheme = "http")
         {
             if (spaBuilder == null)
             {
@@ -41,7 +42,7 @@ namespace VueCliMiddleware
                 throw new InvalidOperationException($"To use {nameof(UseVueCli)}, you must supply a non-empty value for the {nameof(SpaOptions.SourcePath)} property of {nameof(SpaOptions)} when calling {nameof(SpaApplicationBuilderExtensions.UseSpa)}.");
             }
 
-            VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex);
+            VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex, uriScheme: uriScheme);
         }
     }
 }
