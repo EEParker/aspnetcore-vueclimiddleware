@@ -18,7 +18,7 @@ namespace VueCliMiddleware
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 0, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex)
+            string scriptName, int port = 0, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, string uriScheme = "http")
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))
@@ -43,7 +43,7 @@ namespace VueCliMiddleware
             //   wanted to, because in general the vue-cli server has no certificate
             var targetUriTask = portTask.ContinueWith(
                 task =>
-                new UriBuilder("http", "localhost", task.Result).Uri);
+                new UriBuilder(uriScheme, "localhost", task.Result).Uri);
 
             SpaProxyingExtensions.UseProxyToSpaDevelopmentServer(spaBuilder, () =>
             {
