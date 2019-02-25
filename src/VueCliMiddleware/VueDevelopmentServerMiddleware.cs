@@ -13,12 +13,13 @@ namespace VueCliMiddleware
     {
         private const string LogCategoryName = "VueCliMiddleware";
         internal const string DefaultRegex = "running at";
+        internal const string DefaultUriScheme = "http";
 
         private static TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5); // This is a development-time only feature, so a very long timeout is fine
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 0, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, string uriScheme = "http")
+            string scriptName, int port = 0, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, string uriScheme = DefaultUriScheme)
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))

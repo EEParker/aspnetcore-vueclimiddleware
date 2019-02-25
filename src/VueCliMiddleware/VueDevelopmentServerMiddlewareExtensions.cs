@@ -28,7 +28,7 @@ namespace VueCliMiddleware
             int port = 0,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            string uriScheme = "http")
+            string uriScheme = VueCliMiddleware.DefaultUriScheme)
         {
             if (spaBuilder == null)
             {
