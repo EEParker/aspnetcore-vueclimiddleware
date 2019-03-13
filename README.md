@@ -24,7 +24,7 @@ This is a stand-alone module to add VueCli support to AspNet Core 2.2.0.
            // Need to register ISpaStaticFileProvider for UseSpaStaticFiles middleware to work
            services.AddSpaStaticFiles(configuration =>
            {
-               configuration.RootPath = "ClientApp";
+               configuration.RootPath = "ClientApp/dist";
            });
         }
 
