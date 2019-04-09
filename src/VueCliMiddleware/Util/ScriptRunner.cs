@@ -49,8 +49,8 @@ namespace VueCliMiddleware
                 // On Windows, the NPM executable is a .cmd file, so it can't be executed
                 // directly (except with UseShellExecute=true, but that's no good, because
                 // it prevents capturing stdio). So we need to invoke it via "cmd /c".
+                completeArguments = $"/c {npmExe} {completeArguments}";
                 npmExe = "cmd";
-                completeArguments = $"/c npm {completeArguments}";
             }
 
             var processStartInfo = new ProcessStartInfo(npmExe)
