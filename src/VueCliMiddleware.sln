@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueCliMiddleware", "VueCliMiddleware\VueCliMiddleware.csproj", "{6EF79200-935A-4EBB-BB10-EB233A360210}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueCliMiddleware.Tests", "VueCliMiddleware.Tests\VueCliMiddleware.Tests.csproj", "{36DA789C-1C87-48A3-9A9E-804E9BA5C141}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueCliMiddleware.Tests", "VueCliMiddleware.Tests\VueCliMiddleware.Tests.csproj", "{36DA789C-1C87-48A3-9A9E-804E9BA5C141}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E3830FF-A9BD-4D14-8F65-1FBE28F81E05}"
+	ProjectSection(SolutionItems) = preProject
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
