@@ -28,6 +28,16 @@ namespace VueCliMiddleware
 
         private static Regex AnsiColorRegex = new Regex("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
 
+        public Process RunnerProcess => _runnerProcess;
+
+        private Process _runnerProcess;
+
+        public void Kill()
+        {
+            try { _runnerProcess?.Kill(); } catch { }
+            try { _runnerProcess?.WaitForExit(); } catch { }
+        }
+
         public ScriptRunner(string workingDirectory, string scriptName, string arguments, IDictionary<string, string> envVars, ScriptRunnerType runner)
         {
             if (string.IsNullOrEmpty(workingDirectory))
@@ -71,9 +81,9 @@ namespace VueCliMiddleware
                 }
             }
 
-            var process = LaunchNodeProcess(processStartInfo);
-            StdOut = new EventedStreamReader(process.StandardOutput);
-            StdErr = new EventedStreamReader(process.StandardError);
+            _runnerProcess = LaunchNodeProcess(processStartInfo);
+            StdOut = new EventedStreamReader(_runnerProcess.StandardOutput);
+            StdErr = new EventedStreamReader(_runnerProcess.StandardError);
         }
 
         public void AttachToLogger(ILogger logger)
@@ -85,7 +95,9 @@ namespace VueCliMiddleware
                 {
                     // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
                     // those to loggers (because a logger isn't necessarily any kind of terminal)
-                    logger.LogInformation(StripAnsiColors(line) + "\r\n");
+                    //logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
+                    // making this console for debug purpose 
+                    Console.Write(line);
                 }
             };
 
@@ -93,7 +105,9 @@ namespace VueCliMiddleware
             {
                 if (!string.IsNullOrWhiteSpace(line))
                 {
-                    logger.LogError(StripAnsiColors(line + "\r\n"));
+                    //logger.LogError(StripAnsiColors(line).TrimEnd('\n'));
+                    // making this console for debug purpose
+                    Console.Error.Write(line);
                 }
             };
 

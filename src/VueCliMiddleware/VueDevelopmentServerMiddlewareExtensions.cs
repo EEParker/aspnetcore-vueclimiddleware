@@ -25,8 +25,8 @@ namespace VueCliMiddleware
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
             string npmScript,
-            int port = 0,
-            ScriptRunnerType runner = ScriptRunnerType.Npm, 
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
         {
             if (spaBuilder == null)

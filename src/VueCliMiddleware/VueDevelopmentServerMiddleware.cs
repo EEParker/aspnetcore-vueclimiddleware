@@ -18,7 +18,7 @@ namespace VueCliMiddleware
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 0, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex)
+            string scriptName, int port = 8080, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex)
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))
@@ -61,7 +61,15 @@ namespace VueCliMiddleware
             string sourcePath, string npmScriptName, ILogger logger, int portNumber, ScriptRunnerType runner, string regex)
         {
             if (portNumber < 80)
+            {
                 portNumber = TcpPortFinder.FindAvailablePort();
+            }
+            else
+            {
+                // if the port we want to use is occupied, terminate the process utilizing that port.
+                // this occurs when "stop" is used from the debugger and the middleware does not have the opportunity to kill the process
+                PidUtils.KillPort((ushort)portNumber);
+            }
             logger.LogInformation($"Starting server on port {portNumber}...");
 
             var envVars = new Dictionary<string, string>
@@ -71,6 +79,9 @@ namespace VueCliMiddleware
                 { "BROWSER", "none" }, // We don't want vue-cli to open its own extra browser window pointing to the internal dev server port
             };
             var npmScriptRunner = new ScriptRunner(sourcePath, npmScriptName, $"--port {portNumber:0}", envVars, runner: runner);
+            AppDomain.CurrentDomain.DomainUnload += (s, e) => npmScriptRunner?.Kill();
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => npmScriptRunner?.Kill();
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => npmScriptRunner?.Kill();
             npmScriptRunner.AttachToLogger(logger);
 
             using (var stdErrReader = new EventedStreamStringReader(npmScriptRunner.StdErr))
