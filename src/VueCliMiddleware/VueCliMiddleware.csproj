@@ -6,7 +6,7 @@
 
     <Title>VueCliMiddleware</Title>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview6</VersionSuffix>
+    <VersionSuffix>preview7</VersionSuffix>
     <LangVersion>Latest</LangVersion>
     <Authors>EEParker</Authors>
     <RepositoryUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</RepositoryUrl>
@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0-preview6.19307.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0-preview7.19365.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview7.19362.4" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
