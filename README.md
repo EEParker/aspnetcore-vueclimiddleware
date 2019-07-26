@@ -1,4 +1,4 @@
-# VueCliMiddleware
+# VueCliMiddleware - Supporting Vue Cli and Quasar Cli
 
 [![](https://img.shields.io/nuget/v/VueCliMiddleware.svg)](https://www.nuget.org/packages/VueCliMiddleware/)
 
