@@ -5,7 +5,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 using System;
 using System.Threading.Tasks;
 using System.Net;
@@ -26,10 +25,15 @@ namespace VueCliMiddleware
         {
             // If the DI system gives us a logger, use it. Otherwise, set up a default one.
             var loggerFactory = appBuilder.ApplicationServices.GetService<ILoggerFactory>();
-            var logger = loggerFactory != null
-                ? loggerFactory.CreateLogger(logCategoryName)
-                : new ConsoleLogger(logCategoryName, null, false);
-            return logger;
+            if (loggerFactory == null)
+            {
+                loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    builder.AddConsole();
+                });
+            }
+
+            return loggerFactory.CreateLogger(logCategoryName);
         }
     }
 

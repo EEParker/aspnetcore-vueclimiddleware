@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SpaServices;
 using System;
 
@@ -42,6 +44,93 @@ namespace VueCliMiddleware
             }
 
             VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex);
+        }
+
+        public static IEndpointConventionBuilder MapToVueCliProxy(
+            this IEndpointRouteBuilder endpoints,
+            string pattern,
+            SpaOptions options,
+            string npmScript,
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex)
+        {
+            if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, options, npmScript, port, runner, regex));
+        }
+
+        public static IEndpointConventionBuilder MapToVueCliProxy(
+            this IEndpointRouteBuilder endpoints,
+            string pattern,
+            string sourcePath,
+            string npmScript,
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex)
+        {
+            if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
+            if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, runner, regex));
+        }
+
+        public static IEndpointConventionBuilder MapToVueCliProxy(
+            this IEndpointRouteBuilder endpoints,
+            SpaOptions options,
+            string npmScript,
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex)
+        {
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, options, npmScript, port, runner, regex));
+        }
+
+        public static IEndpointConventionBuilder MapToVueCliProxy(
+            this IEndpointRouteBuilder endpoints,
+            string sourcePath,
+            string npmScript,
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex)
+        {
+            if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, runner, regex));
+        }
+
+
+        // based on CreateRequestDelegate() https://github.com/aspnet/AspNetCore/blob/master/src/Middleware/StaticFiles/src/StaticFilesEndpointRouteBuilderExtensions.cs#L194
+        private static RequestDelegate CreateProxyRequestDelegate(
+            IEndpointRouteBuilder endpoints,
+            SpaOptions options,
+            string npmScript,
+            int port = 8080,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = VueCliMiddleware.DefaultRegex)
+        {
+            if (endpoints == null) { throw new ArgumentNullException(nameof(endpoints)); }
+            if (options == null) { throw new ArgumentNullException(nameof(options)); }
+            if (npmScript == null) { throw new ArgumentNullException(nameof(npmScript)); }
+
+            var app = endpoints.CreateApplicationBuilder();
+            app.Use(next => context =>
+            {
+                // Set endpoint to null so the SPA middleware will handle the request.
+                context.SetEndpoint(null);
+                return next(context);
+            });
+
+            app.UseSpa(opt =>
+            {
+                if (options != null)
+                {
+                    opt.Options.DefaultPage = options.DefaultPage;
+                    opt.Options.DefaultPageStaticFileOptions = options.DefaultPageStaticFileOptions;
+                    opt.Options.SourcePath = options.SourcePath;
+                    opt.Options.StartupTimeout = options.StartupTimeout;
+                }
+                opt.UseVueCli(npmScript, port, runner, regex);
+            });
+
+            return app.Build();
         }
     }
 }
