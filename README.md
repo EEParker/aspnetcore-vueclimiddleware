@@ -2,9 +2,36 @@
 
 [![](https://img.shields.io/nuget/v/VueCliMiddleware.svg)](https://www.nuget.org/packages/VueCliMiddleware/)
 
-This is a stand-alone module to add VueCli support to AspNet Core 2.2.0. 
+This is a stand-alone module to add Vue Cli and Quasar Cli support to AspNet Core.
 
-## Usage Example
+
+## ASP.NET 3.0 Preview Endpoint Routing (experimental)
+First, be sure to switch Vue Cli or Quasar Cli to output distribution files to wwwroot directly (not dist).
+
+* Quasar CLI: regex: "Compiled successfully"
+* Vue CLI: regex: default or "running at"
+
+See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-2.2&tabs=visual-studio#update-routing-startup-code)
+```csharp
+// To use with EndpointRouting
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+
+                // initialize vue cli middleware
+#if DEBUG
+                if (System.Diagnostics.Debugger.IsAttached)
+                    endpoints.MapToVueCliProxy("{*path}", new SpaOptions { SourcePath = "ClientApp" }, "dev", regex: "Compiled successfully");
+                else
+#endif
+                    // note: output of vue cli or quasar cli should be wwwroot
+                    endpoints.MapFallbackToFile("index.html");
+            });
+```
+
+
+## ASP.NET 2.2 Usage Example
 ```csharp
     using VueCliMiddleware;
 

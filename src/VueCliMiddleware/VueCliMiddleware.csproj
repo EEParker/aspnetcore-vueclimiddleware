@@ -6,13 +6,22 @@
 
     <Title>VueCliMiddleware</Title>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview7</VersionSuffix>
+    <VersionSuffix>preview7-1</VersionSuffix>
     <LangVersion>Latest</LangVersion>
     <Authors>EEParker</Authors>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware.git</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/EEParker/aspnetcore-vueclimiddleware/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0-preview7.19365.7" />
