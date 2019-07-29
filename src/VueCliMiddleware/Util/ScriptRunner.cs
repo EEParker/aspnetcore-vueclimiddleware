@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Text;
 
 namespace VueCliMiddleware
 {
@@ -19,23 +20,48 @@ namespace VueCliMiddleware
     {
         public EventedStreamReader StdOut { get; }
         public EventedStreamReader StdErr { get; }
+        public Process RunnerProcess { get; }
 
         public ScriptRunnerType Runner { get; }
 
-        private string GetExeName() => Runner == ScriptRunnerType.Npm ? "npm" : "yarn";
-        private string GetArgPrefix() => Runner == ScriptRunnerType.Npm ? "run " : "";
-        private string GetArgSuffix() => Runner == ScriptRunnerType.Npm ? "-- " : "";
+        private string GetExeName()        
+        {
+            switch (Runner)
+            {
+                case ScriptRunnerType.Npm:
+                    return "npm";
+                case ScriptRunnerType.Yarn:
+                    return "yarn";
+                case ScriptRunnerType.Npx:
+                    return "npx";
+                default:
+                    return "npm";
+            }
+        }
+
+        private static string BuildCommand(ScriptRunnerType runner, string scriptName, string arguments)
+        {
+            var command = new StringBuilder();
+
+            if (runner == ScriptRunnerType.Npm) { command.Append("run "); }
+
+            command.Append(scriptName);
+            command.Append(' ');
+
+            if (runner == ScriptRunnerType.Npm) { command.Append("-- "); }
+
+            if (!string.IsNullOrWhiteSpace(arguments)) { command.Append(arguments); }
+            return command.ToString();
+        }
 
         private static Regex AnsiColorRegex = new Regex("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
 
-        public Process RunnerProcess => _runnerProcess;
 
-        private Process _runnerProcess;
 
         public void Kill()
         {
-            try { _runnerProcess?.Kill(); } catch { }
-            try { _runnerProcess?.WaitForExit(); } catch { }
+            try { RunnerProcess?.Kill(); } catch { }
+            try { RunnerProcess?.WaitForExit(); } catch { }
         }
 
         public ScriptRunner(string workingDirectory, string scriptName, string arguments, IDictionary<string, string> envVars, ScriptRunnerType runner)
@@ -52,18 +78,19 @@ namespace VueCliMiddleware
 
             Runner = runner;
 
-            var npmExe = GetExeName();
-            var completeArguments = $"{GetArgPrefix()}{scriptName} {GetArgSuffix()}{arguments ?? string.Empty}";
+            var exeName = GetExeName();
+            var completeArguments = BuildCommand(runner, scriptName, arguments);
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // On Windows, the NPM executable is a .cmd file, so it can't be executed
                 // directly (except with UseShellExecute=true, but that's no good, because
                 // it prevents capturing stdio). So we need to invoke it via "cmd /c".
-                completeArguments = $"/c {npmExe} {completeArguments}";
-                npmExe = "cmd";
+                completeArguments = $"/c {exeName} {completeArguments}";
+                exeName = "cmd";
             }
 
-            var processStartInfo = new ProcessStartInfo(npmExe)
+            var processStartInfo = new ProcessStartInfo(exeName)
             {
                 Arguments = completeArguments,
                 UseShellExecute = false,
@@ -81,9 +108,10 @@ namespace VueCliMiddleware
                 }
             }
 
-            _runnerProcess = LaunchNodeProcess(processStartInfo);
-            StdOut = new EventedStreamReader(_runnerProcess.StandardOutput);
-            StdErr = new EventedStreamReader(_runnerProcess.StandardError);
+            RunnerProcess = LaunchNodeProcess(processStartInfo);
+
+            StdOut = new EventedStreamReader(RunnerProcess.StandardOutput);
+            StdErr = new EventedStreamReader(RunnerProcess.StandardError);
         }
 
         public void AttachToLogger(ILogger logger)

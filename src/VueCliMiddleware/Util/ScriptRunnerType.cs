@@ -3,6 +3,7 @@
     public enum ScriptRunnerType
     {
         Npm,
-        Yarn
+        Yarn,
+        Npx
     }
 }
