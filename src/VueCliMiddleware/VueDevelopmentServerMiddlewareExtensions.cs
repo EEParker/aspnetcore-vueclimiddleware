@@ -23,7 +23,7 @@ namespace VueCliMiddleware
         /// <param name="npmScript">The name of the script in your package.json file that launches the vue-cli server.</param>
         /// <param name="port">Specify vue cli server port number. If &lt; 80, uses random port. </param>
         /// <param name="runner">Specify the runner, Npm and Yarn are valid options. Yarn support is HIGHLY experimental.</param>
-        /// <param name="regex">Specify a custom regex string to search for in the log indicating vue-cli serve is complete.</param>
+        /// <param name="regex">Specify a custom regex string to search for in the log indicating proxied server is running. VueCli: "running at", QuasarCli: "Compiled successfully"</param>
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
             string npmScript,
