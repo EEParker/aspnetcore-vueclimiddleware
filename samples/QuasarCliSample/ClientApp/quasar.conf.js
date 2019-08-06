@@ -1,6 +1,32 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+const path = require('path')
+
+// Configuration for your app
+function extendWebpackAliases(cfg) {
+  cfg.resolve.alias['~'] = __dirname;
+  cfg.resolve.alias['@'] = path.resolve(__dirname, 'src');
+}
+
+function extendWebpackTypescript(cfg) {
+  // added the type-script support
+  cfg.resolve.extensions.push('.ts');
+
+  cfg.module.rules.push({
+    test: /\.(tsx?)$/,
+    loader: 'ts-loader',
+    options: { appendTsSuffixTo: [/\.vue$/] }
+  });
+};
+
+function extendWebpackPug(cfg) {
+  cfg.module.rules.push({
+    test: /\.pug$/,
+    loader: 'pug-plain-loader'
+  });
+}
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -65,7 +91,11 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
+      extractCSS: true,
       extendWebpack (cfg) {
+        extendWebpackAliases(cfg);
+        extendWebpackTypescript(cfg);
+        extendWebpackPug(cfg);
       }
     },
 

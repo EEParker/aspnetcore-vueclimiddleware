@@ -10,11 +10,22 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "quasar": "^1.0.0"
+    "@quasar/extras": "^1.2.0",
+    "axios": "^0.19.0",
+    "quasar": "^1.0.5",
+    "vue-class-component": "^7.1.0",
+    "vue-property-decorator": "^8.2.1",
+    "vuex": "^3.1.1",
+    "vuex-class": "^0.3.2",
+    "vuex-module-decorators": "^0.9.9"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0"
+    "@quasar/app": "^1.0.4",
+    "@types/node": "^12.6.9",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3"
   },
   "engines": {
     "node": ">= 8.9.0",
