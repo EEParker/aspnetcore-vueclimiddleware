@@ -86,11 +86,11 @@ module.exports = function (ctx) {
 
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      distDir: './dist', // used by dotnet project
+      vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
-      // extractCSS: false,
       extractCSS: true,
       extendWebpack (cfg) {
         extendWebpackAliases(cfg);

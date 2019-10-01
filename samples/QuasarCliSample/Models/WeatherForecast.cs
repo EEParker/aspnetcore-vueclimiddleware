@@ -1,6 +1,6 @@
 using System;
 
-namespace QuasarCliSample
+namespace QuasarCliSample.Models
 {
     public class WeatherForecast
     {

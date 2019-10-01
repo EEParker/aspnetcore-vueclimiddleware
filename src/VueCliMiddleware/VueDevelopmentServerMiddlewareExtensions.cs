@@ -50,7 +50,7 @@ namespace VueCliMiddleware
             this IEndpointRouteBuilder endpoints,
             string pattern,
             SpaOptions options,
-            string npmScript,
+            string npmScript = null,
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -63,7 +63,7 @@ namespace VueCliMiddleware
             this IEndpointRouteBuilder endpoints,
             string pattern,
             string sourcePath,
-            string npmScript,
+            string npmScript = null,
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -76,7 +76,7 @@ namespace VueCliMiddleware
         public static IEndpointConventionBuilder MapToVueCliProxy(
             this IEndpointRouteBuilder endpoints,
             SpaOptions options,
-            string npmScript,
+            string npmScript = null,
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -87,7 +87,7 @@ namespace VueCliMiddleware
         public static IEndpointConventionBuilder MapToVueCliProxy(
             this IEndpointRouteBuilder endpoints,
             string sourcePath,
-            string npmScript,
+            string npmScript = null,
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -101,14 +101,14 @@ namespace VueCliMiddleware
         private static RequestDelegate CreateProxyRequestDelegate(
             IEndpointRouteBuilder endpoints,
             SpaOptions options,
-            string npmScript,
+            string npmScript = null,
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
         {
             if (endpoints == null) { throw new ArgumentNullException(nameof(endpoints)); }
             if (options == null) { throw new ArgumentNullException(nameof(options)); }
-            if (npmScript == null) { throw new ArgumentNullException(nameof(npmScript)); }
+            //if (npmScript == null) { throw new ArgumentNullException(nameof(npmScript)); }
 
             var app = endpoints.CreateApplicationBuilder();
             app.Use(next => context =>
@@ -127,7 +127,11 @@ namespace VueCliMiddleware
                     opt.Options.SourcePath = options.SourcePath;
                     opt.Options.StartupTimeout = options.StartupTimeout;
                 }
-                opt.UseVueCli(npmScript, port, runner, regex);
+
+                if (!string.IsNullOrWhiteSpace(npmScript))
+                {
+                    opt.UseVueCli(npmScript, port, runner, regex);
+                }
             });
 
             return app.Build();
