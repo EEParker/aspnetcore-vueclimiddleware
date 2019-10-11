@@ -42,8 +42,7 @@ namespace VueCliMiddleware
             // - given that, there's no reason to use https, and we couldn't even if we
             //   wanted to, because in general the vue-cli server has no certificate
             var targetUriTask = portTask.ContinueWith(
-                task =>
-                new UriBuilder("http", "localhost", task.Result).Uri);
+                task => new UriBuilder("http", "localhost", task.Result).Uri);
 
             SpaProxyingExtensions.UseProxyToSpaDevelopmentServer(spaBuilder, () =>
             {
@@ -78,6 +77,7 @@ namespace VueCliMiddleware
                 { "DEV_SERVER_PORT", portNumber.ToString() }, // vue cli 3 uses --port {number}, included below
                 { "BROWSER", "none" }, // We don't want vue-cli to open its own extra browser window pointing to the internal dev server port
             };
+
             var npmScriptRunner = new ScriptRunner(sourcePath, npmScriptName, $"--port {portNumber:0}", envVars, runner: runner);
             AppDomain.CurrentDomain.DomainUnload += (s, e) => npmScriptRunner?.Kill();
             AppDomain.CurrentDomain.ProcessExit += (s, e) => npmScriptRunner?.Kill();

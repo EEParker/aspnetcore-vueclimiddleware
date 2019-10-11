@@ -26,7 +26,7 @@ namespace VueCliMiddleware
         /// <param name="regex">Specify a custom regex string to search for in the log indicating proxied server is running. VueCli: "running at", QuasarCli: "Compiled successfully"</param>
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
-            string npmScript,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -46,11 +46,12 @@ namespace VueCliMiddleware
             VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex);
         }
 
+
         public static IEndpointConventionBuilder MapToVueCliProxy(
             this IEndpointRouteBuilder endpoints,
             string pattern,
             SpaOptions options,
-            string npmScript = null,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -63,7 +64,7 @@ namespace VueCliMiddleware
             this IEndpointRouteBuilder endpoints,
             string pattern,
             string sourcePath,
-            string npmScript = null,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -76,7 +77,7 @@ namespace VueCliMiddleware
         public static IEndpointConventionBuilder MapToVueCliProxy(
             this IEndpointRouteBuilder endpoints,
             SpaOptions options,
-            string npmScript = null,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -87,7 +88,7 @@ namespace VueCliMiddleware
         public static IEndpointConventionBuilder MapToVueCliProxy(
             this IEndpointRouteBuilder endpoints,
             string sourcePath,
-            string npmScript = null,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
@@ -97,15 +98,17 @@ namespace VueCliMiddleware
         }
 
 
-        // based on CreateRequestDelegate() https://github.com/aspnet/AspNetCore/blob/master/src/Middleware/StaticFiles/src/StaticFilesEndpointRouteBuilderExtensions.cs#L194
+        
         private static RequestDelegate CreateProxyRequestDelegate(
             IEndpointRouteBuilder endpoints,
             SpaOptions options,
-            string npmScript = null,
+            string npmScript = "serve",
             int port = 8080,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex)
         {
+            // based on CreateRequestDelegate() https://github.com/aspnet/AspNetCore/blob/master/src/Middleware/StaticFiles/src/StaticFilesEndpointRouteBuilderExtensions.cs#L194
+
             if (endpoints == null) { throw new ArgumentNullException(nameof(endpoints)); }
             if (options == null) { throw new ArgumentNullException(nameof(options)); }
             //if (npmScript == null) { throw new ArgumentNullException(nameof(npmScript)); }

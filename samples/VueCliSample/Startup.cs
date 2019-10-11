@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using VueCliMiddleware;
 
 namespace VueCliSample
 {
@@ -45,6 +47,15 @@ namespace VueCliSample
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                // Note: only use vuecliproxy in development. 
+                // Production should use "UseSpaStaticFiles()" and the webpack dist
+                endpoints.MapToVueCliProxy(
+                    "{*path}",
+                    new SpaOptions { SourcePath = "ClientApp" },
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                    regex: "Compiled successfully"
+                    );
             });
         }
     }

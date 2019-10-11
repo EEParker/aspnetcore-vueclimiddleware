@@ -167,6 +167,8 @@ namespace VueCliMiddleware
 
         public static bool Kill(int pid, bool force = false, bool tree = true)
         {
+            if (pid == -1) { return false; }
+
             var args = new List<string>();
             try
             {

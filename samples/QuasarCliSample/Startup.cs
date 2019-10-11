@@ -40,8 +40,6 @@ namespace QuasarCliSample
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseSpaStaticFiles();
 
             app.UseRouting();
@@ -52,14 +50,13 @@ namespace QuasarCliSample
             {
                 endpoints.MapControllers();
 
+                // Note: only use vuecliproxy in development. 
+                // Production should use "UseSpaStaticFiles()" and the webpack dist
                 endpoints.MapToVueCliProxy(
                     "{*path}",
-                    new SpaOptions { SourcePath = "ClientApp" }
-                    //,(System.Diagnostics.Debugger.IsAttached) ? "dev" : null
-                    //,regex: "Compiled successfully"
+                    new SpaOptions { SourcePath = "ClientApp" },
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null
                     );
-
-                //endpoints.MapFallbackToFile("{*path}", "index.html");
             });
         }
     }

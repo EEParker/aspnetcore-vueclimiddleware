@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <!--<PublishSingleFile>true</PublishSingleFile>-->
-    <!--<PublishTrimmed>true</PublishTrimmed>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +9,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <!-- Typescript/Javascript Client Configuration -->
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
