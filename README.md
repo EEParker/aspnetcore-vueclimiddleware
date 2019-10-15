@@ -4,6 +4,7 @@
 
 This is a stand-alone module to add Vue Cli and Quasar Cli support to AspNet Core.
 
+See the examples here: [https://github.com/EEParker/aspnetcore-vueclimiddleware/tree/master/samples](https://github.com/EEParker/aspnetcore-vueclimiddleware/tree/master/samples)
 
 ## ASP.NET 3.0 Preview Endpoint Routing (experimental)
 First, be sure to switch Vue Cli or Quasar Cli to output distribution files to wwwroot directly (not dist).
