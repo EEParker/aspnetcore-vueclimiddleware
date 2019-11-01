@@ -80,7 +80,7 @@ namespace VueCliMiddleware
         private static List<string[]> RunProcessReturnOutputSplit(string fileName, string arguments)
         {
             string result = RunProcessReturnOutput(fileName, arguments);
-            if (result == null) return null;
+            if (result == null) return new List<string[]>();
 
             string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var lineWords = new List<string[]>();
