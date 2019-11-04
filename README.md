@@ -10,7 +10,12 @@ See the examples here: [https://github.com/EEParker/aspnetcore-vueclimiddleware/
 First, be sure to switch Vue Cli or Quasar Cli to output distribution files to wwwroot directly (not dist).
 
 * Quasar CLI: regex: "Compiled successfully"
-* Vue CLI: regex: default or "running at"
+* Vue CLI: regex: default or "running at" or "Starting development server"
+ >the reason for **`Starting development server`** ,the npm-script running checkpoint: 
+ Although the dev server may eventually tell us the URL it's listening on,
+                    it doesn't do so until it's finished compiling, and even then only if there were
+                    no compiler warnings. So instead of waiting for that, consider it ready as soon
+                     as it starts listening for requests.[see the codes](https://github.com/EEParker/aspnetcore-vueclimiddleware/blob/master/src/VueCliMiddleware/VueDevelopmentServerMiddleware.cs#L91)
 
 See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-2.2&tabs=visual-studio#update-routing-startup-code)
 ```csharp
