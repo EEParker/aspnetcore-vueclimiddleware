@@ -18,7 +18,7 @@ namespace VueCliMiddleware
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 8080, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex)
+            string scriptName, int port = 8080, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, bool forceKill = false)
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))
@@ -34,7 +34,7 @@ namespace VueCliMiddleware
             // Start vue-cli and attach to middleware pipeline
             var appBuilder = spaBuilder.ApplicationBuilder;
             var logger = LoggerFinder.GetOrCreateLogger(appBuilder, LogCategoryName);
-            var portTask = StartVueCliServerAsync(sourcePath, scriptName, logger, port, runner, regex);
+            var portTask = StartVueCliServerAsync(sourcePath, scriptName, logger, port, runner, regex, forceKill);
 
             // Everything we proxy is hardcoded to target http://localhost because:
             // - the requests are always from the local machine (we're not accepting remote
@@ -57,7 +57,7 @@ namespace VueCliMiddleware
         }
 
         private static async Task<int> StartVueCliServerAsync(
-            string sourcePath, string npmScriptName, ILogger logger, int portNumber, ScriptRunnerType runner, string regex)
+            string sourcePath, string npmScriptName, ILogger logger, int portNumber, ScriptRunnerType runner, string regex, bool forceKill = false)
         {
             if (portNumber < 80)
             {
@@ -67,7 +67,7 @@ namespace VueCliMiddleware
             {
                 // if the port we want to use is occupied, terminate the process utilizing that port.
                 // this occurs when "stop" is used from the debugger and the middleware does not have the opportunity to kill the process
-                PidUtils.KillPort((ushort)portNumber);
+                PidUtils.KillPort((ushort)portNumber, forceKill);
             }
             logger.LogInformation($"Starting server on port {portNumber}...");
 
