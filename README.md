@@ -19,8 +19,6 @@ First, be sure to switch Vue Cli or Quasar Cli to output distribution files to w
 
 See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-2.2&tabs=visual-studio#update-routing-startup-code)
 ```csharp
-
-
     public class Startup {
 
         public Startup(IConfiguration configuration)
@@ -66,6 +64,7 @@ See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/e
                     );
             });
         }
+    }
 ```
 
 
