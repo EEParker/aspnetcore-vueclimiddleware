@@ -27,6 +27,8 @@ namespace VueCliSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // NOTE: PRODUCTION Ensure this is the same path that is specified in your webpack output
+            services.AddSpaStaticFiles(opt => opt.RootPath = "ClientApp/dist");
             services.AddControllers();
         }
 
@@ -38,7 +40,11 @@ namespace VueCliSample
                 app.UseDeveloperExceptionPage();
             }
 
+            // NOTE: this is optional, it adds HTTPS to Kestrel
             app.UseHttpsRedirection();
+
+            // NOTE: PRODUCTION uses webpack static files
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -48,13 +54,18 @@ namespace VueCliSample
             {
                 endpoints.MapControllers();
 
-                // Note: only use vuecliproxy in development. 
-                // Production should use "UseSpaStaticFiles()" and the webpack dist
+                // NOTE: VueCliProxy is meant for developement and hot module reload
+                // NOTE: SSR has not been tested
+                // Production systems should only need the UseSpaStaticFiles() (above)
+                // You could wrap this proxy in either
+                // if (System.Diagnostics.Debugger.IsAttached)
+                // or a preprocessor such as #if DEBUG
                 endpoints.MapToVueCliProxy(
                     "{*path}",
                     new SpaOptions { SourcePath = "ClientApp" },
                     npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
-                    regex: "Compiled successfully"
+                    regex: "Compiled successfully",
+                    forceKill: true
                     );
             });
         }

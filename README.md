@@ -19,21 +19,53 @@ First, be sure to switch Vue Cli or Quasar Cli to output distribution files to w
 
 See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-2.2&tabs=visual-studio#update-routing-startup-code)
 ```csharp
-// To use with EndpointRouting
+
+
+    public class Startup {
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // NOTE: PRODUCTION Ensure this is the same path that is specified in your webpack output
+            services.AddSpaStaticFiles(opt => opt.RootPath = "ClientApp/dist");
+            services.AddControllers();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // NOTE: PRODUCTION uses webpack static files
+            app.UseSpaStaticFiles();
+
+            // To use with EndpointRouting
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
 
-                // initialize vue cli middleware
-#if DEBUG
-                if (System.Diagnostics.Debugger.IsAttached)
-                    endpoints.MapToVueCliProxy("{*path}", new SpaOptions { SourcePath = "ClientApp" }, "dev", regex: "Compiled successfully");
-                else
-#endif
-                    // note: output of vue cli or quasar cli should be wwwroot
-                    endpoints.MapFallbackToFile("index.html");
+                // NOTE: VueCliProxy is meant for developement and hot module reload
+                // NOTE: SSR has not been tested
+                // Production systems should only need the UseSpaStaticFiles() (above)
+                // You could wrap this proxy in either
+                // if (System.Diagnostics.Debugger.IsAttached)
+                // or a preprocessor such as #if DEBUG
+                endpoints.MapToVueCliProxy(
+                    "{*path}",
+                    new SpaOptions { SourcePath = "ClientApp" },
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                    regex: "Compiled successfully",
+                    forceKill: true
+                    );
             });
+        }
 ```
 
 
@@ -55,10 +87,7 @@ See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/e
            services.AddMvc(); // etc
            
            // Need to register ISpaStaticFileProvider for UseSpaStaticFiles middleware to work
-           services.AddSpaStaticFiles(configuration =>
-           {
-               configuration.RootPath = "ClientApp/dist";
-           });
+           services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
