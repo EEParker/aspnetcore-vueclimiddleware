@@ -26,7 +26,15 @@ import { Component, Vue} from 'vue-property-decorator';
 import { IWeatherForecast } from '../models/IWeatherForecast';
 import axios from 'axios';
 
-@Component
+@Component({
+  filters: {
+    capitalize: function(value: string) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  }
+})
 export default class Home extends Vue {
   private forecasts: IWeatherForecast[] = [{ summary: 'No data.' } as IWeatherForecast];
   private forecastCols: any[] = [
