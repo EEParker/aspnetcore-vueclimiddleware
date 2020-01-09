@@ -10,7 +10,7 @@ See the examples here: [https://github.com/EEParker/aspnetcore-vueclimiddleware/
 First, be sure to switch Vue Cli or Quasar Cli to output distribution files to wwwroot directly (not dist).
 
 * Quasar CLI: regex: "Compiled successfully"
-* Vue CLI: regex: default or "running at" or "Starting development server"
+* Vue CLI: regex: "Compiled successfully" or "running at" or "Starting development server" depending on version
  >the reason for **`Starting development server`** ,the npm-script running checkpoint: 
  Although the dev server may eventually tell us the URL it's listening on,
                     it doesn't do so until it's finished compiling, and even then only if there were
