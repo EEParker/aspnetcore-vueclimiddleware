@@ -6,7 +6,7 @@ This is a stand-alone module to add Vue Cli and Quasar Cli support to AspNet Cor
 
 See the examples here: [https://github.com/EEParker/aspnetcore-vueclimiddleware/tree/master/samples](https://github.com/EEParker/aspnetcore-vueclimiddleware/tree/master/samples)
 
-## ASP.NET 3.0 Preview Endpoint Routing (experimental)
+## ASP.NET 3.X Endpoint Routing
 First, be sure to switch Vue Cli or Quasar Cli to output distribution files to wwwroot directly (not dist).
 
 * Quasar CLI: regex: "Compiled successfully"
@@ -17,7 +17,7 @@ First, be sure to switch Vue Cli or Quasar Cli to output distribution files to w
                     no compiler warnings. So instead of waiting for that, consider it ready as soon
                      as it starts listening for requests.[see the codes](https://github.com/EEParker/aspnetcore-vueclimiddleware/blob/master/src/VueCliMiddleware/VueDevelopmentServerMiddleware.cs#L91)
 
-See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-2.2&tabs=visual-studio#update-routing-startup-code)
+See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#update-routing-startup-code)
 ```csharp
     public class Startup {
 
