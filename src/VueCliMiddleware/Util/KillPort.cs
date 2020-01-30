@@ -175,12 +175,14 @@ namespace VueCliMiddleware
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
                     if (force) { args.Add("-9"); }
-                    RunProcessReturnOutput("kill", "");
+                    args.Add(pid.ToString());
+                    RunProcessReturnOutput("kill", string.Join(" ", args));
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
                     if (force) { args.Add("-9"); }
-                    RunProcessReturnOutput("kill", "");
+                    args.Add(pid.ToString());
+                    RunProcessReturnOutput("kill", string.Join(" ", args));
                 }
                 else
                 {
