@@ -39,22 +39,19 @@ See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/e
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // NOTE: PRODUCTION uses webpack static files
+	    // optional base path for IIS virtual app/directory
+	    app.UsePathBase("/optionalpath");
+            
+	    // PRODUCTION uses webpack static files
             app.UseSpaStaticFiles();
 
-            // To use with EndpointRouting
+            // Routing
             app.UseRouting();
-
+            app.UserAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
 
-                // NOTE: VueCliProxy is meant for developement and hot module reload
-                // NOTE: SSR has not been tested
-                // Production systems should only need the UseSpaStaticFiles() (above)
-                // You could wrap this proxy in either
-                // if (System.Diagnostics.Debugger.IsAttached)
-                // or a preprocessor such as #if DEBUG
                 endpoints.MapToVueCliProxy(
                     "{*path}",
                     new SpaOptions { SourcePath = "ClientApp" },
