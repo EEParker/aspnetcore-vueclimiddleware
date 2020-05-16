@@ -22,12 +22,14 @@ namespace VueCliMiddleware
         /// <param name="spaBuilder">The <see cref="ISpaBuilder"/>.</param>
         /// <param name="npmScript">The name of the script in your package.json file that launches the vue-cli server.</param>
         /// <param name="port">Specify vue cli server port number. If &lt; 80, uses random port. </param>
+        /// <param name="https">Specify vue cli server schema </param>
         /// <param name="runner">Specify the runner, Npm and Yarn are valid options. Yarn support is HIGHLY experimental.</param>
         /// <param name="regex">Specify a custom regex string to search for in the log indicating proxied server is running. VueCli: "running at", QuasarCli: "Compiled successfully"</param>
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
@@ -44,7 +46,7 @@ namespace VueCliMiddleware
                 throw new InvalidOperationException($"To use {nameof(UseVueCli)}, you must supply a non-empty value for the {nameof(SpaOptions.SourcePath)} property of {nameof(SpaOptions)} when calling {nameof(SpaApplicationBuilderExtensions.UseSpa)}.");
             }
 
-            VueCliMiddleware.Attach(spaBuilder, npmScript, port, runner: runner, regex: regex, forceKill: forceKill);
+            VueCliMiddleware.Attach(spaBuilder, npmScript, port, https: https, runner: runner, regex: regex, forceKill: forceKill);
         }
 
 
@@ -54,12 +56,13 @@ namespace VueCliMiddleware
             SpaOptions options,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
         {
             if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
-            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, options, npmScript, port, runner, regex, forceKill));
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -68,13 +71,14 @@ namespace VueCliMiddleware
             string sourcePath,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
         {
             if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
             if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
-            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, runner, regex, forceKill));
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -82,11 +86,12 @@ namespace VueCliMiddleware
             SpaOptions options,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
         {
-            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, options, npmScript, port, runner, regex, forceKill));
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -94,12 +99,13 @@ namespace VueCliMiddleware
             string sourcePath,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
         {
             if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
-            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, runner, regex, forceKill));
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill));
         }
 
 
@@ -109,6 +115,7 @@ namespace VueCliMiddleware
             SpaOptions options,
             string npmScript = "serve",
             int port = 8080,
+            bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
             bool forceKill = false)
@@ -139,7 +146,7 @@ namespace VueCliMiddleware
 
                 if (!string.IsNullOrWhiteSpace(npmScript))
                 {
-                    opt.UseVueCli(npmScript, port, runner, regex, forceKill);
+                    opt.UseVueCli(npmScript, port, https, runner, regex, forceKill);
                 }
             });
 
