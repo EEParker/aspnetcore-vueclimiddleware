@@ -181,11 +181,13 @@ module.exports = {
 }
 ```
 5. you can now set the https option to true.
+```
 endpoints.MapToVueCliProxy(
                     ...
                     https: true
                     ...
                     );
+```
 
 ## History
 
