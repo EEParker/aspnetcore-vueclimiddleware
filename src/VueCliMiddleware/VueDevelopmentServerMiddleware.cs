@@ -18,7 +18,7 @@ namespace VueCliMiddleware
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 8080, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, bool forceKill = false)
+            string scriptName, int port = 8080, bool https = false, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, bool forceKill = false)
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))
@@ -39,10 +39,8 @@ namespace VueCliMiddleware
             // Everything we proxy is hardcoded to target http://localhost because:
             // - the requests are always from the local machine (we're not accepting remote
             //   requests that go directly to the vue-cli server)
-            // - given that, there's no reason to use https, and we couldn't even if we
-            //   wanted to, because in general the vue-cli server has no certificate
             var targetUriTask = portTask.ContinueWith(
-                task => new UriBuilder("http", "localhost", task.Result).Uri);
+                task => new UriBuilder(https ? "https" : "http", "localhost", task.Result).Uri);
 
             SpaProxyingExtensions.UseProxyToSpaDevelopmentServer(spaBuilder, () =>
             {

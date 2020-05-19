@@ -159,6 +159,36 @@ You may also need to add the following tasks to your csproj file. This are simil
 
 ```
 
+## Setting up for HTTPS
+
+For consistent schemas & for hot reload to not break while using https you will need to setup
+your vue app, before enabling the `https` flag.
+
+1. Get the `mkcert` tool following the installation instructions on their [github](https://github.com/FiloSottile/mkcert) repository or their [releases](https://github.com/FiloSottile/mkcert/releases)
+2. Install root CA `mkcert -install`
+3. Generate the certificates `mkcert localhost 127.0.0.1 <local ipv4> ::1` 
+4. Add certificates to `vue.config.js`
+```
+const fs = require('fs')
+
+module.exports = {
+    devServer: {
+        https: {
+            key: fs.readFileSync('./certs/localhost+3-key.pem'),
+            cert: fs.readFileSync('./certs/localhost+3.pem'),
+        }
+    }
+}
+```
+5. you can now set the https option to true.
+```
+endpoints.MapToVueCliProxy(
+                    ...
+                    https: true
+                    ...
+                    );
+```
+
 ## History
 
 Due to the discussion [here](https://github.com/aspnet/JavaScriptServices/pull/1726), it was decided to not be included in the Microsoft owned package.
