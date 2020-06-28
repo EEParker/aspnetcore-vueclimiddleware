@@ -24,7 +24,7 @@ namespace VueCliMiddleware
 
         public ScriptRunnerType Runner { get; }
 
-        private string GetExeName()        
+        private string GetExeName()
         {
             switch (Runner)
             {
@@ -64,7 +64,7 @@ namespace VueCliMiddleware
             try { RunnerProcess?.WaitForExit(); } catch { }
         }
 
-        public ScriptRunner(string workingDirectory, string scriptName, string arguments, IDictionary<string, string> envVars, ScriptRunnerType runner)
+        public ScriptRunner(string workingDirectory, string scriptName, string arguments, IDictionary<string, string> envVars, ScriptRunnerType runner, bool wsl)
         {
             if (string.IsNullOrEmpty(workingDirectory))
             {
@@ -83,11 +83,19 @@ namespace VueCliMiddleware
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                // On Windows, the NPM executable is a .cmd file, so it can't be executed
-                // directly (except with UseShellExecute=true, but that's no good, because
-                // it prevents capturing stdio). So we need to invoke it via "cmd /c".
-                completeArguments = $"/c {exeName} {completeArguments}";
-                exeName = "cmd";
+                if (wsl)
+                {
+                    completeArguments = $"{exeName} {completeArguments}";
+                    exeName = "wsl";
+                }
+                else
+                {
+                    // On Windows, the NPM executable is a .cmd file, so it can't be executed
+                    // directly (except with UseShellExecute=true, but that's no good, because
+                    // it prevents capturing stdio). So we need to invoke it via "cmd /c".
+                    completeArguments = $"/c {exeName} {completeArguments}";
+                    exeName = "cmd";
+                }
             }
 
             var processStartInfo = new ProcessStartInfo(exeName)
@@ -124,8 +132,15 @@ namespace VueCliMiddleware
                     // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
                     // those to loggers (because a logger isn't necessarily any kind of terminal)
                     //logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
-                    // making this console for debug purpose 
-                    Console.Write(line);
+                    // making this console for debug purpose
+                    if (line.StartsWith("<s>"))
+                    {
+                        Console.Error.WriteLine(line.Substring(3));
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine(line);
+                    }
                 }
             };
 
@@ -135,7 +150,14 @@ namespace VueCliMiddleware
                 {
                     //logger.LogError(StripAnsiColors(line).TrimEnd('\n'));
                     // making this console for debug purpose
-                    Console.Error.Write(line);
+                    if (line.StartsWith("<s>"))
+                    {
+                        Console.Error.WriteLine(line.Substring(3));
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine(line);
+                    }
                 }
             };
 

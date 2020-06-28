@@ -166,7 +166,7 @@ namespace VueCliMiddleware
                 // get all the newlines
                 while ((lineBreakPos = Array.IndexOf(buf, '\n', startPos, chunkLength - startPos)) >= 0 && startPos < chunkLength)
                 {
-                    var length = (lineBreakPos + 1) - startPos;
+                    var length = lineBreakPos - startPos;
                     _linesBuffer.Append(buf, startPos, length);
                     OnCompleteLine(_linesBuffer.ToString());
                     _linesBuffer.Clear();

@@ -25,6 +25,8 @@ namespace VueCliMiddleware
         /// <param name="https">Specify vue cli server schema </param>
         /// <param name="runner">Specify the runner, Npm and Yarn are valid options. Yarn support is HIGHLY experimental.</param>
         /// <param name="regex">Specify a custom regex string to search for in the log indicating proxied server is running. VueCli: "running at", QuasarCli: "Compiled successfully"</param>
+        /// <param name="forceKill"></param>
+        /// <param name="wsl"></param>
         public static void UseVueCli(
             this ISpaBuilder spaBuilder,
             string npmScript = "serve",
@@ -32,7 +34,8 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
             if (spaBuilder == null)
             {
@@ -46,7 +49,7 @@ namespace VueCliMiddleware
                 throw new InvalidOperationException($"To use {nameof(UseVueCli)}, you must supply a non-empty value for the {nameof(SpaOptions.SourcePath)} property of {nameof(SpaOptions)} when calling {nameof(SpaApplicationBuilderExtensions.UseSpa)}.");
             }
 
-            VueCliMiddleware.Attach(spaBuilder, npmScript, port, https: https, runner: runner, regex: regex, forceKill: forceKill);
+            VueCliMiddleware.Attach(spaBuilder, npmScript, port, https: https, runner: runner, regex: regex, forceKill: forceKill, wsl: wsl);
         }
 
 
@@ -59,10 +62,11 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
             if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
-            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill));
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill, wsl));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -74,11 +78,12 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
             if (pattern == null) { throw new ArgumentNullException(nameof(pattern)); }
             if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
-            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill));
+            return endpoints.MapFallback(pattern, CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill, wsl));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -89,9 +94,10 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
-            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill));
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, options, npmScript, port, https, runner, regex, forceKill, wsl));
         }
 
         public static IEndpointConventionBuilder MapToVueCliProxy(
@@ -102,10 +108,11 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
             if (sourcePath == null) { throw new ArgumentNullException(nameof(sourcePath)); }
-            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill));
+            return endpoints.MapFallback("{*path}", CreateProxyRequestDelegate(endpoints, new SpaOptions { SourcePath = sourcePath }, npmScript, port, https, runner, regex, forceKill, wsl));
         }
 
 
@@ -118,7 +125,8 @@ namespace VueCliMiddleware
             bool https = false,
             ScriptRunnerType runner = ScriptRunnerType.Npm,
             string regex = VueCliMiddleware.DefaultRegex,
-            bool forceKill = false)
+            bool forceKill = false,
+            bool wsl = false)
         {
             // based on CreateRequestDelegate() https://github.com/aspnet/AspNetCore/blob/master/src/Middleware/StaticFiles/src/StaticFilesEndpointRouteBuilderExtensions.cs#L194
 
@@ -146,7 +154,7 @@ namespace VueCliMiddleware
 
                 if (!string.IsNullOrWhiteSpace(npmScript))
                 {
-                    opt.UseVueCli(npmScript, port, https, runner, regex, forceKill);
+                    opt.UseVueCli(npmScript, port, https, runner, regex, forceKill, wsl);
                 }
             });
 
