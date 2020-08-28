@@ -36,11 +36,11 @@ namespace VueCliMiddleware
             var logger = LoggerFinder.GetOrCreateLogger(appBuilder, LogCategoryName);
             var portTask = StartVueCliServerAsync(sourcePath, scriptName, logger, port, runner, regex, forceKill);
 
-            // Everything we proxy is hardcoded to target http://localhost because:
+            // Everything we proxy is hardcoded to target localhost because:
             // - the requests are always from the local machine (we're not accepting remote
             //   requests that go directly to the vue-cli server)
             var targetUriTask = portTask.ContinueWith(
-                task => new UriBuilder(https ? "https" : "http", "localhost", task.Result).Uri);
+                task => new UriBuilder(https ? "https" : "http", "127.0.0.1", task.Result).Uri);
 
             SpaProxyingExtensions.UseProxyToSpaDevelopmentServer(spaBuilder, () =>
             {
