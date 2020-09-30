@@ -57,7 +57,8 @@ See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/e
                     new SpaOptions { SourcePath = "ClientApp" },
                     npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
                     regex: "Compiled successfully",
-                    forceKill: true
+                    forceKill: true,
+		    wsl: false // Set to true if you are using WSL on windows. For other operating systems it will be ignored
                     );
             });
         }
