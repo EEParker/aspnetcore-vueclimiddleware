@@ -1,6 +1,8 @@
 
 #Ignore thumbnails created by Windows
 Thumbs.db
+#Ignore .idea
+*.idea
 #Ignore files built by Visual Studio
 *.obj
 *.exe

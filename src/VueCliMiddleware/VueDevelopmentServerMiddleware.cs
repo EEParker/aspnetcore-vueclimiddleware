@@ -18,7 +18,13 @@ namespace VueCliMiddleware
 
         public static void Attach(
             ISpaBuilder spaBuilder,
-            string scriptName, int port = 8080, bool https = false, ScriptRunnerType runner = ScriptRunnerType.Npm, string regex = DefaultRegex, bool forceKill = false)
+            string scriptName,
+            int port = 8080,
+            bool https = false,
+            ScriptRunnerType runner = ScriptRunnerType.Npm,
+            string regex = DefaultRegex,
+            bool forceKill = false,
+            bool wsl = false)
         {
             var sourcePath = spaBuilder.Options.SourcePath;
             if (string.IsNullOrEmpty(sourcePath))
@@ -34,7 +40,7 @@ namespace VueCliMiddleware
             // Start vue-cli and attach to middleware pipeline
             var appBuilder = spaBuilder.ApplicationBuilder;
             var logger = LoggerFinder.GetOrCreateLogger(appBuilder, LogCategoryName);
-            var portTask = StartVueCliServerAsync(sourcePath, scriptName, logger, port, runner, regex, forceKill);
+            var portTask = StartVueCliServerAsync(sourcePath, scriptName, logger, port, runner, regex, forceKill, wsl);
 
             // Everything we proxy is hardcoded to target localhost because:
             // - the requests are always from the local machine (we're not accepting remote
@@ -55,7 +61,14 @@ namespace VueCliMiddleware
         }
 
         private static async Task<int> StartVueCliServerAsync(
-            string sourcePath, string npmScriptName, ILogger logger, int portNumber, ScriptRunnerType runner, string regex, bool forceKill = false)
+            string sourcePath,
+            string npmScriptName,
+            ILogger logger,
+            int portNumber,
+            ScriptRunnerType runner,
+            string regex,
+            bool forceKill = false,
+            bool wsl = false)
         {
             if (portNumber < 80)
             {
@@ -76,7 +89,7 @@ namespace VueCliMiddleware
                 { "BROWSER", "none" }, // We don't want vue-cli to open its own extra browser window pointing to the internal dev server port
             };
 
-            var npmScriptRunner = new ScriptRunner(sourcePath, npmScriptName, $"--port {portNumber:0}", envVars, runner: runner);
+            var npmScriptRunner = new ScriptRunner(sourcePath, npmScriptName, $"--port {portNumber:0}", envVars, runner: runner, wsl: wsl);
             AppDomain.CurrentDomain.DomainUnload += (s, e) => npmScriptRunner?.Kill();
             AppDomain.CurrentDomain.ProcessExit += (s, e) => npmScriptRunner?.Kill();
             AppDomain.CurrentDomain.UnhandledException += (s, e) => npmScriptRunner?.Kill();
