@@ -87,6 +87,7 @@ namespace VueCliMiddleware
                 { "PORT", portNumber.ToString() },
                 { "DEV_SERVER_PORT", portNumber.ToString() }, // vue cli 3 uses --port {number}, included below
                 { "BROWSER", "none" }, // We don't want vue-cli to open its own extra browser window pointing to the internal dev server port
+                { "CODESANDBOX_SSE", true.ToString() }, // this will make vue cli use client side HMR inference
             };
 
             var npmScriptRunner = new ScriptRunner(sourcePath, npmScriptName, $"--port {portNumber:0}", envVars, runner: runner, wsl: wsl);
