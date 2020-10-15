@@ -1,0 +1,1 @@
+dotnet pack .\src\VueCliMiddleware\VueCliMiddleware.csproj --output .\src\nupkgs -p:PackageVersion=3.1.2
