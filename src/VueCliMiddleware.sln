@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarCliSample", "..\samples\QuasarCliSample\QuasarCliSample.csproj", "{9C672A02-413F-45CB-ACC7-E067561A40E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuasarCliSample", "..\samples\QuasarCliSample\QuasarCliSample.csproj", "{9C672A02-413F-45CB-ACC7-E067561A40E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E0AC4E37-9F26-4CAD-A3F9-10420CB0F9E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueCliSample", "..\samples\VueCliSample\VueCliSample.csproj", "{FBE4604B-BCF1-4220-8292-135193C95967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueCliSample", "..\samples\VueCliSample\VueCliSample.csproj", "{FBE4604B-BCF1-4220-8292-135193C95967}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

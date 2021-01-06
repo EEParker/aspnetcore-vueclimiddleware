@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <Description>Helpers for building single-page applications on ASP.NET MVC Core using Vue Cli.</Description>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1; net5.0</TargetFrameworks>
 
     <Title>VueCliMiddleware</Title>
-    <VersionPrefix>3.1.2</VersionPrefix>
+    <VersionPrefix>3.2.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <LangVersion>Latest</LangVersion>
     <Authors>EEParker</Authors>
@@ -23,11 +23,15 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
