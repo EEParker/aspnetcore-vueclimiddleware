@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E0AC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueCliSample", "..\samples\VueCliSample\VueCliSample.csproj", "{FBE4604B-BCF1-4220-8292-135193C95967}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vue3Sample", "..\samples\Vue3\Vue3Sample.csproj", "{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{FBE4604B-BCF1-4220-8292-135193C95967}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBE4604B-BCF1-4220-8292-135193C95967}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBE4604B-BCF1-4220-8292-135193C95967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9C672A02-413F-45CB-ACC7-E067561A40E0} = {E0AC4E37-9F26-4CAD-A3F9-10420CB0F9E7}
 		{FBE4604B-BCF1-4220-8292-135193C95967} = {E0AC4E37-9F26-4CAD-A3F9-10420CB0F9E7}
+		{1DB93D9A-B5F1-4467-8263-7FC10BEC1EA3} = {E0AC4E37-9F26-4CAD-A3F9-10420CB0F9E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9280CDC-FB96-4CF4-B48A-048A3355168A}
