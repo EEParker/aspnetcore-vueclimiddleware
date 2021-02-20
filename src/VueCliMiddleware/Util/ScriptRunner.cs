@@ -34,6 +34,8 @@ namespace VueCliMiddleware
                     return "yarn";
                 case ScriptRunnerType.Npx:
                     return "npx";
+                case ScriptRunnerType.Pnpm:
+                    return "pnpm";
                 default:
                     return "npm";
             }

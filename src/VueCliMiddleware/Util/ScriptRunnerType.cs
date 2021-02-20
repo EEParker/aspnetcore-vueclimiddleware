@@ -4,6 +4,7 @@
     {
         Npm,
         Yarn,
-        Npx
+        Npx,
+        Pnpm
     }
 }
