@@ -24,7 +24,7 @@
   "devDependencies": {
     "@quasar/app": "^1.9.6",
     "@types/node": "^13.13.39",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.1.0",
     "ts-loader": "^6.2.2",
     "typescript": "^3.9.7"
