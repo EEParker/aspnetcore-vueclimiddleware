@@ -17,6 +17,22 @@ First, be sure to switch Vue Cli or Quasar Cli to output distribution files to w
                     no compiler warnings. So instead of waiting for that, consider it ready as soon
                      as it starts listening for requests.[see the codes](https://github.com/EEParker/aspnetcore-vueclimiddleware/blob/master/src/VueCliMiddleware/VueDevelopmentServerMiddleware.cs#L91)
 
+## Configuration Options
+When using the `MapToVueCliProxy` or `UseVueCli` you can customize the behavior based on your npm script runner or compiler. 
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+|`npmScript`|string|The name of the script in your package.json file that launches the vue-cli, quasar cli or other web server.||
+|`spaOptions`|[SpaOptions](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.spaservices.spaoptions?view=aspnetcore-5.0)|Set the folder of the app to be proxied.||
+|`port`|int|Specify the vue cli server port number. This is also used by the force-kill option to discover processes utilizing the port.|8080|
+|`https`|bool|Set proxy to use https|false|
+|`runner`|`enum { Npm, Yarn }`|Specify the runner, Npm and Yarn are valid options. Yarn support is experimental.|Npm|
+|`regex`|string|**IMPORTANT** Text to search in npm log that indicates web server is running. This **MUST BE SET** for vue-cli, quasar and quasar v2. (e.g. `running at`, `READY`, `APP Url`)|`running at`|
+|`forceKill`|bool|Attempt to kill the npm process when stopping debugging.|false|
+|`wsl`|bool|Set to true if you are using WSL on windows. For other operating systems it will be ignored. This changes the executed process name to `wsl` instead of `cmd`.|false|
+
+
+
 See [Migrating Asp.Net 2.2 to 3.0 Endpoint Routing](https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.1&tabs=visual-studio#update-routing-startup-code)
 ```csharp
     public class Startup {
